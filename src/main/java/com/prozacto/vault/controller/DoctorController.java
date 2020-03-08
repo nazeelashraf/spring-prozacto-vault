@@ -35,7 +35,6 @@ public class DoctorController {
     @Autowired
     private TokenUtil tokenUtil;
 
-
     @GetMapping("/doctor")
     @Secured({"ROLE_ASSISTANT", "ROLE_DOCTOR"})
     List<Doctor> getDoctors(@RequestHeader("Authorization") String token) {

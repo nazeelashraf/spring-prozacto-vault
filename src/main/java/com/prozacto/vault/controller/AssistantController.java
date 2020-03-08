@@ -2,10 +2,7 @@ package com.prozacto.vault.controller;
 
 import com.prozacto.vault.exception.ClinicNotFoundException;
 import com.prozacto.vault.exception.UserNotFoundException;
-import com.prozacto.vault.model.ApplicationUser;
-import com.prozacto.vault.model.Assistant;
-import com.prozacto.vault.model.Doctor;
-import com.prozacto.vault.model.Role;
+import com.prozacto.vault.model.*;
 import com.prozacto.vault.repository.*;
 import com.prozacto.vault.security.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +38,16 @@ public class AssistantController {
 
     @PostMapping("/assistant")
     @Secured({"ROLE_DOCTOR"})
-    Assistant postAssistant(@RequestBody Assistant assistant){
+    Assistant postAssistant(@RequestBody Assistant assistant, @RequestHeader("Authorization") String token){
         ApplicationUser user = userRepository.findById(assistant.getUser().getId())
                 .orElseThrow(() -> {return new UserNotFoundException(assistant.getUser().getId());});
-        clinicRepository.findById(assistant.getClinic().getClinicId())
-                .orElseThrow(() -> {return new ClinicNotFoundException(assistant.getClinic().getClinicId());});
 
+        Long clinicId = tokenUtil.getClinicId(token);
+
+        Clinic clinic = clinicRepository.findById(clinicId)
+                .orElseThrow(() -> {return new ClinicNotFoundException(clinicId);});
+
+        assistant.setClinic(clinic);
         Role role = roleRepository.findByName("ROLE_ASSISTANT");
         user.setRoles(Arrays.asList(role));
         assistant.setUser(user);

@@ -154,7 +154,7 @@ public class PatientController {
 
     }
 
-    @PostMapping("/patient/clinics/{id}")
+    @PutMapping("/patient/clinics/{id}")
     @Secured({"ROLE_PATIENT"})
     public String grantClinicWithAccess(@RequestHeader("Authorization") String token,
                                          @PathVariable("id") Long clinicId,
