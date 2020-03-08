@@ -104,7 +104,7 @@ Prefix all endpoints with ```http://localhost:8765```. Step by step endpoint gui
    * PUT ```/patient/clinics/{id}```: grants zip data access to all doctors of clinic id ```id```
    * DELETE ```/patient/clinics/{id}```: revokes zip data access from all doctors of clinic id ```id```
    
-6. **Doctor Endpoints```: Log in with the doctor credentials and set the Authorization header with the token.
+6. **Doctor Endpoints***: Log in with the doctor credentials and set the Authorization header with the token.
    * GET ```/appointment```: gets list of all appointments for this doctor
    * POST ```/assistant```: creates a new assistant who is linked to the user with user id ```id``` for the same clinic as the doctor
    ```
