@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class VaultApplication {
@@ -80,11 +82,13 @@ public class VaultApplication {
 			assistantRepository.save(assistant);
 			roleRepository.save(assistantRole);
 
+			Set<Clinic> clinicSet = new HashSet<>();
+			clinicSet.add(clinic);
 
 			Patient patient = new Patient();
 			patient.setFirstName("Angus");
 			patient.setLastName("Young");
-			patient.setClinic(clinic);
+			patient.setClinics(clinicSet);
 			user = new ApplicationUser();
 			user.setUsername("patient");
 			user.setPassword(bCryptPasswordEncoder().encode("patient"));

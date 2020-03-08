@@ -30,8 +30,8 @@ public class Clinic {
     @JsonIgnoreProperties("clinic")
     private Set<Assistant> assistants = new HashSet<>();
 
-    @OneToMany(mappedBy = "clinic", fetch= FetchType.EAGER, cascade=CascadeType.ALL)
-    @JsonIgnoreProperties("clinic")
+    @ManyToMany(mappedBy = "clinics", fetch= FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("clinics")
     private Set<Patient> patients = new HashSet<>();
 
     @OneToMany(mappedBy = "clinic", fetch= FetchType.EAGER, cascade=CascadeType.ALL)

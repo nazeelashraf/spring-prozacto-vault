@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.sql.Blob;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,10 +24,14 @@ public class Patient {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long patientId;
 
-    @ManyToOne
-    @JoinColumn(name="clinic_id", nullable = false)
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+            name="patient_clinic_map",
+            joinColumns=@JoinColumn(name="patient_id"),
+            inverseJoinColumns=@JoinColumn(name="clinic_id")
+    )
     @JsonIgnoreProperties({"doctors", "assistants", "patients", "appointments"})
-    private Clinic clinic;
+    private Set<Clinic> clinics = new HashSet<>();
 
     @OneToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

@@ -11,6 +11,7 @@ import com.prozacto.vault.exception.InvalidRefreshTokenException;
 import com.prozacto.vault.exception.InvalidRoleException;
 import com.prozacto.vault.model.ApplicationUser;
 import com.prozacto.vault.model.Doctor;
+import com.prozacto.vault.model.Patient;
 import com.prozacto.vault.repository.AssistantRepository;
 import com.prozacto.vault.repository.DoctorRepository;
 import com.prozacto.vault.repository.PatientRepository;
@@ -88,8 +89,20 @@ public class TokenUtil {
             return doctorRepository.getClinicId(Long.parseLong(jwt.getSubject()));
         } else if (roles.contains("ROLE_ASSISTANT")) {
             return assistantRepository.getClinicId(Long.parseLong(jwt.getSubject()));
-        } else if (roles.contains("ROLE_PATIENT")) {
-            return patientRepository.getClinicId(Long.parseLong(jwt.getSubject()));
+        } else {
+            throw new InvalidRoleException();
+        }
+    }
+
+    public List<Long> getClinicIdList(String token){
+        token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
+
+        DecodedJWT jwt = JWT.decode(token);
+        List<String> roles = Arrays.asList(jwt.getClaim("ROLES").asString().split(","));
+
+        if (roles.contains("ROLE_PATIENT")) {
+            Patient patient = patientRepository.findPatientByUserId(Long.parseLong(jwt.getSignature()));
+            return patientRepository.getClinicIdList(patient.getPatientId());
         } else {
             throw new InvalidRoleException();
         }
