@@ -2,6 +2,7 @@ package com.prozacto.vault.controller;
 
 import com.prozacto.vault.exception.ClinicNotFoundException;
 import com.prozacto.vault.exception.DoctorNotFoundException;
+import com.prozacto.vault.exception.EmptyFieldException;
 import com.prozacto.vault.exception.PatientNotFoundException;
 import com.prozacto.vault.model.*;
 import com.prozacto.vault.repository.*;
@@ -55,6 +56,13 @@ public class AppointmentController {
     @PostMapping("/appointment")
     @Secured({"ROLE_ASSISTANT"})
     Appointment createAppointment(@RequestBody Appointment appointment, @RequestHeader("Authorization") String token){
+
+        if(appointment.getDoctor()==null) throw new EmptyFieldException("doctor");
+        if(appointment.getDoctor().getDoctorId()==null) throw new EmptyFieldException("doctor.doctorId");
+        if(appointment.getPatient()==null) throw new EmptyFieldException("patient");
+        if(appointment.getPatient().getPatientId()==null) throw new EmptyFieldException("patient.patientId");
+        if(appointment.getDate()==null) throw new EmptyFieldException("date");
+
         Doctor doctor = doctorRepository.findById(appointment.getDoctor().getDoctorId())
                 .orElseThrow(() -> {return new DoctorNotFoundException(appointment.getDoctor().getDoctorId());});
         appointment.setDoctor(doctor);

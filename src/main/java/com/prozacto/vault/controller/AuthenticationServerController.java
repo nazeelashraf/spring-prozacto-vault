@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationServerController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private TokenUtil tokenUtil;
 
 

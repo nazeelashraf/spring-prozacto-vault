@@ -1,5 +1,6 @@
 package com.prozacto.vault.controller;
 
+import com.prozacto.vault.exception.EmptyFieldException;
 import com.prozacto.vault.model.Clinic;
 import com.prozacto.vault.repository.ClinicRepository;
 import jdk.nashorn.internal.objects.annotations.Setter;
@@ -27,6 +28,7 @@ public class ClinicController {
     @PostMapping("clinic")
     @Secured({"ROLE_ADMIN"})
     Clinic postClinic(@RequestBody Clinic clinic){
+        if(clinic.getName()==null) throw new EmptyFieldException("name");
         return clinicRepository.save(clinic);
     }
  }

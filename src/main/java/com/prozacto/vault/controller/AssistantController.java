@@ -1,6 +1,7 @@
 package com.prozacto.vault.controller;
 
 import com.prozacto.vault.exception.ClinicNotFoundException;
+import com.prozacto.vault.exception.EmptyFieldException;
 import com.prozacto.vault.exception.UserNotFoundException;
 import com.prozacto.vault.model.*;
 import com.prozacto.vault.repository.*;
@@ -39,6 +40,11 @@ public class AssistantController {
     @PostMapping("/assistant")
     @Secured({"ROLE_DOCTOR"})
     Assistant postAssistant(@RequestBody Assistant assistant, @RequestHeader("Authorization") String token){
+
+        if(assistant.getUser()==null) throw new EmptyFieldException("user");
+        if(assistant.getUser().getId()==null) throw new EmptyFieldException("user.id");
+        if(assistant.getFirstName()==null) throw new EmptyFieldException("firstName");
+        if(assistant.getLastName()==null) throw new EmptyFieldException("lastName");
         ApplicationUser user = userRepository.findById(assistant.getUser().getId())
                 .orElseThrow(() -> {return new UserNotFoundException(assistant.getUser().getId());});
 

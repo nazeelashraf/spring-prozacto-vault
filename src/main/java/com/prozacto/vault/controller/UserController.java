@@ -1,5 +1,6 @@
 package com.prozacto.vault.controller;
 
+import com.prozacto.vault.exception.EmptyFieldException;
 import com.prozacto.vault.exception.UserAlreadyExistsException;
 import com.prozacto.vault.model.ApplicationUser;
 import com.prozacto.vault.repository.RoleRepository;
@@ -27,11 +28,14 @@ public class UserController {
 
 	@PostMapping("/sign-up")
 	public String signUp(@RequestBody ApplicationUser user) {
-		
+
+		if(user.getPassword()==null) throw new EmptyFieldException("password");
+		if(user.getUsername()==null) throw new EmptyFieldException("username");
+
 		if(userRepository.findByUsername(user.getUsername()) != null) {
 			throw new UserAlreadyExistsException();
 		}
-		
+
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
 		user = userRepository.save(user);

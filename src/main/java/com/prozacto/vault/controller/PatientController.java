@@ -52,6 +52,11 @@ public class PatientController {
 
         Long clinicId = tokenUtil.getClinicId(token);
 
+        if(patient.getUser()==null) throw new EmptyFieldException("user");
+        if(patient.getUser().getId()==null) throw new EmptyFieldException("user.id");
+        if(patient.getFirstName()==null) throw new EmptyFieldException("firstName");
+        if(patient.getLastName()==null) throw new EmptyFieldException("lastName");
+
         ApplicationUser user = userRepository.findById(patient.getUser().getId())
                 .orElseThrow(() -> {return new UserNotFoundException(patient.getUser().getId());});
         Clinic clinic = clinicRepository.findById(clinicId)
