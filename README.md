@@ -36,7 +36,7 @@ Prefix all endpoints with ```http://localhost:8765```. Step by step endpoint gui
          "password": "sparrow"
       }
    ```
-   On successful signup, you will recieve the following response message:
+   On successful signup, you will receive the following response message:
    ```Thank you for signing up! Your unique ID is 5```.
    Make note of this unique ID as it is required to link the role to the user at a later stage.
    
