@@ -29,7 +29,7 @@ public class Patient {
             joinColumns=@JoinColumn(name="patient_id"),
             inverseJoinColumns=@JoinColumn(name="clinic_id")
     )
-    @JsonIgnoreProperties({"doctors", "assistants", "patients", "appointments"})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Clinic> clinics = new HashSet<>();
 
     @OneToOne
