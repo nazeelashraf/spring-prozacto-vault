@@ -1,4 +1,4 @@
-package com.prozacto.vault.security;
+package com.prozacto.vault.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,26 +10,22 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.prozacto.vault.exception.InvalidRefreshTokenException;
 import com.prozacto.vault.exception.InvalidRoleException;
 import com.prozacto.vault.model.ApplicationUser;
-import com.prozacto.vault.model.Doctor;
 import com.prozacto.vault.model.Patient;
 import com.prozacto.vault.repository.AssistantRepository;
 import com.prozacto.vault.repository.DoctorRepository;
 import com.prozacto.vault.repository.PatientRepository;
 import com.prozacto.vault.repository.UserRepository;
+import com.prozacto.vault.security.SecurityConstants;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.jcajce.provider.digest.SHA1;
-import org.bouncycastle.jcajce.provider.digest.SHA512;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component

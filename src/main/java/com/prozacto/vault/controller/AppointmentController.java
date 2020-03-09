@@ -2,11 +2,11 @@ package com.prozacto.vault.controller;
 
 import com.prozacto.vault.exception.ClinicNotFoundException;
 import com.prozacto.vault.exception.DoctorNotFoundException;
-import com.prozacto.vault.exception.EmptyFieldException;
 import com.prozacto.vault.exception.PatientNotFoundException;
 import com.prozacto.vault.model.*;
 import com.prozacto.vault.repository.*;
-import com.prozacto.vault.security.TokenUtil;
+import com.prozacto.vault.util.TokenUtil;
+import com.prozacto.vault.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +35,9 @@ public class AppointmentController {
     @Autowired
     private TokenUtil tokenUtil;
 
+    @Autowired
+    private ValidationUtil validationUtil;
+
     @GetMapping("/appointment")
     @Secured({"ROLE_ASSISTANT", "ROLE_DOCTOR", "ROLE_PATIENT"})
     List<Appointment> getAppointments(@RequestHeader("Authorization") String token){
@@ -57,11 +60,7 @@ public class AppointmentController {
     @Secured({"ROLE_ASSISTANT"})
     Appointment createAppointment(@RequestBody Appointment appointment, @RequestHeader("Authorization") String token){
 
-        if(appointment.getDoctor()==null) throw new EmptyFieldException("doctor");
-        if(appointment.getDoctor().getDoctorId()==null) throw new EmptyFieldException("doctor.doctorId");
-        if(appointment.getPatient()==null) throw new EmptyFieldException("patient");
-        if(appointment.getPatient().getPatientId()==null) throw new EmptyFieldException("patient.patientId");
-        if(appointment.getDate()==null) throw new EmptyFieldException("date");
+        validationUtil.validateAppointment(appointment);
 
         Doctor doctor = doctorRepository.findById(appointment.getDoctor().getDoctorId())
                 .orElseThrow(() -> {return new DoctorNotFoundException(appointment.getDoctor().getDoctorId());});

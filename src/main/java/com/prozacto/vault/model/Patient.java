@@ -9,7 +9,6 @@ import lombok.ToString;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Set;
 

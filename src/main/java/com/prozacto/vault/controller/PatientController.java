@@ -1,22 +1,25 @@
 package com.prozacto.vault.controller;
 
 import com.prozacto.vault.exception.*;
-import com.prozacto.vault.model.*;
+import com.prozacto.vault.model.ApplicationUser;
+import com.prozacto.vault.model.Clinic;
+import com.prozacto.vault.model.Patient;
+import com.prozacto.vault.model.Role;
 import com.prozacto.vault.repository.ClinicRepository;
 import com.prozacto.vault.repository.PatientRepository;
 import com.prozacto.vault.repository.RoleRepository;
 import com.prozacto.vault.repository.UserRepository;
-import com.prozacto.vault.security.TokenUtil;
+import com.prozacto.vault.util.TokenUtil;
+import com.prozacto.vault.util.ValidationUtil;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +43,9 @@ public class PatientController {
     @Autowired
     private TokenUtil tokenUtil;
 
+    @Autowired
+    private ValidationUtil validationUtil;
+
     @GetMapping("/patient")
     @Secured({"ROLE_DOCTOR", "ROLE_ASSISTANT"})
     List<Patient>  getPatients(@RequestHeader("Authorization") String token){
@@ -50,12 +56,9 @@ public class PatientController {
     @Secured({"ROLE_DOCTOR", "ROLE_ASSISTANT"})
     Patient postPatient(@RequestBody Patient patient, @RequestHeader("Authorization") String token){
 
-        Long clinicId = tokenUtil.getClinicId(token);
+        validationUtil.validatePatient(patient);
 
-        if(patient.getUser()==null) throw new EmptyFieldException("user");
-        if(patient.getUser().getId()==null) throw new EmptyFieldException("user.id");
-        if(patient.getFirstName()==null) throw new EmptyFieldException("firstName");
-        if(patient.getLastName()==null) throw new EmptyFieldException("lastName");
+        Long clinicId = tokenUtil.getClinicId(token);
 
         ApplicationUser user = userRepository.findById(patient.getUser().getId())
                 .orElseThrow(() -> {return new UserNotFoundException(patient.getUser().getId());});
