@@ -8,7 +8,10 @@ This app runs on Spring Boot Java framework with embedded tomcat (port 8765) as 
 ## Setup
 1. Clone the repository.
 2. Run the following command in the root path to start the server:
-   ```./mvnw clean install -DskipTests=true spring-boot:run```
+   * ```./mvnw clean install -DskipTests=true spring-boot:run``` for UNIX systems
+   * ```.\mvnw.cmd clean install -DskipTests=true spring-boot:run``` for Windows systems
+   (Note that this command downloads required jar files for the project, which may take some time. The files will be located by default in ```~/.m2/repository``` in UNIX sytems and ```C:\Users\<username>\.m2\repository``` for Windows systems)
+   
 3. Use a REST client of your choice (Postman/Insomnia/Curl/...) for testing the endpoints.
    
 ## H2 Console
@@ -18,7 +21,7 @@ To access the H2 console and see the tables, start the server and go to ```http:
 3. password: empty
 
 ## Accounts
-The following users are already preconfigured with access Roles:
+The following users are already preconfigured with respective access roles (```username/password```):
   * Admin:  ```admin/admin```
   * Doctor: ```doctor/doctor```
   * Assistant: ```assistant/assistant```
@@ -33,7 +36,7 @@ Prefix all endpoints with ```http://localhost:8765```. Step by step endpoint gui
          "password": "sparrow"
       }
    ```
-   On successful signup, you will recieve the following response message:
+   On successful signup, you will receive the following response message:
    ```Thank you for signing up! Your unique ID is 5```.
    Make note of this unique ID as it is required to link the role to the user at a later stage.
    
