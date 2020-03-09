@@ -21,7 +21,7 @@ To access the H2 console and see the tables, start the server and go to ```http:
 3. password: empty
 
 ## Accounts
-The following users are already preconfigured with access Roles (```username/password```):
+The following users are already preconfigured with respective access roles (```username/password```):
   * Admin:  ```admin/admin```
   * Doctor: ```doctor/doctor```
   * Assistant: ```assistant/assistant```
