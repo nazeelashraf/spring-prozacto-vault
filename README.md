@@ -11,7 +11,7 @@ This app runs on Spring Boot Java framework with embedded tomcat (port 8765) as 
    * ```./mvnw clean install -DskipTests=true spring-boot:run``` for UNIX systems
    * ```.\mvnw.cmd clean install -DskipTests=true spring-boot:run``` for Windows systems
    
-   (Note that this command downloads required jar files for the project, which may take some time. The files will be located by default in ```~/.m2/repository``` in UNIX sytems and ```C:\Users\<username>\.m2\repository``` for Windows systems)
+   (Note that this command downloads required jar files for the project, which may take some time. The files will be located by default in ```~/.m2/repository``` for UNIX systems and ```C:\Users\<username>\.m2\repository``` for Windows systems)
    
 3. Use a REST client of your choice (Postman/Insomnia/Curl/...) for testing the endpoints.
    
